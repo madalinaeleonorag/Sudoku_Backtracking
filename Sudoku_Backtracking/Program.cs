@@ -187,18 +187,54 @@ class GFG
     public static void print(int[,] board, int N)
 
     {
+        int column, row = 0;
 
-        // we got the answer, just print it  
-
-        for (int row = 0; row < N; row++)
+        for (row = 0; row < N; row++)
 
         {
 
-            for (int column = 0; column < N; column++)
+            for (column = 0; column < N; column++)
+
+            {
+                if (column == 0)
+
+                {
+
+                    Console.Write(" | " + board[row, column]);
+
+                }
+                else
+
+                {
+
+                    Console.Write(board[row, column]);
+
+                }
+
+                if (column % 3 == 2)
+
+                {
+
+                    Console.Write(" | ");
+
+                }
+            }
+
+            if (row % 3 == 2)
 
             {
 
-                Console.Write(board[row, column] + " ");
+                Console.WriteLine();
+
+                for (int emptyLine = 0; emptyLine < N; emptyLine++)
+
+                {
+
+                    Console.Write("-");
+
+                }
+
+                Console.WriteLine();
 
             }
 
