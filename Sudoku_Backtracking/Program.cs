@@ -1,38 +1,38 @@
-﻿/* A Backtracking program in   
-
-C# to solve Sudoku problem */
-
-using System;
-
+﻿using System;
 
 
 class GFG
 
 {
 
+    public static int numberOfIterations = 0;
 
-
-    public static bool isSafe(int[,] board,
-
-                                int row, int col,
-
-                                int num)
+    public static bool IsSafe(int[,] board, int row, int col, int num)
 
     {
 
-        // row has the unique (row-clash)  
+        // verify if the number is already in this row
 
-        for (int d = 0; d < board.GetLength(0); d++)
+        for (int columnNumber = 0; columnNumber < board.GetLength(0); columnNumber++)
+
+        {
+            if (board[row, columnNumber] == num)
+
+            {
+
+                return false;
+
+            }
+
+        }
+
+        // verify if the number is already in this column
+
+        for (int rowNumber = 0; rowNumber < board.GetLength(0); rowNumber++)
 
         {
 
-            // if the number we are trying to   
-
-            // place is already present in   
-
-            // that row, return false;  
-
-            if (board[row, d] == num)
+            if (board[rowNumber, col] == num)
 
             {
 
@@ -43,34 +43,7 @@ class GFG
         }
 
 
-
-        // column has the unique numbers (column-clash)  
-
-        for (int r = 0; r < board.GetLength(0); r++)
-
-        {
-
-            // if the number we are trying to  
-
-            // place is already present in  
-
-            // that column, return false;  
-
-            if (board[r, col] == num)
-
-            {
-
-                return false;
-
-            }
-
-        }
-
-
-
-        // corresponding square has  
-
-        // unique number (box-clash)  
+        // find i,j where the box start
 
         int sqrt = (int)Math.Sqrt(board.GetLength(0));
 
@@ -104,23 +77,24 @@ class GFG
 
         }
 
-
-
-        // if there is no clash, it's safe  
-
         return true;
 
     }
 
-
-
     public static bool solveSudoku(int[,] board, int n)
 
     {
+        numberOfIterations += 1;
 
-        int row = -1;
+        Console.WriteLine("----- Iteration number: " + numberOfIterations);
 
-        int col = -1;
+        print(board, board.GetLength(0));
+
+        Console.WriteLine();
+
+        int row = 0;
+
+        int col = 0;
 
         bool isEmpty = true;
 
@@ -140,11 +114,7 @@ class GFG
 
                     col = j;
 
-
-
-                    // we still have some remaining  
-
-                    // missing values in Sudoku  
+                    // turn isEmpty to false because we still have missing values
 
                     isEmpty = false;
 
@@ -153,6 +123,7 @@ class GFG
                 }
 
             }
+
 
             if (!isEmpty)
 
@@ -177,14 +148,11 @@ class GFG
         }
 
 
-
-        // else for each-row backtrack  
-
         for (int num = 1; num <= n; num++)
 
         {
 
-            if (isSafe(board, row, col, num))
+            if (IsSafe(board, row, col, num))
 
             {
 
@@ -216,57 +184,35 @@ class GFG
 
     }
 
-
-
     public static void print(int[,] board, int N)
 
     {
 
         // we got the answer, just print it  
 
-        for (int r = 0; r < N; r++)
+        for (int row = 0; row < N; row++)
 
         {
 
-            for (int d = 0; d < N; d++)
+            for (int column = 0; column < N; column++)
 
             {
 
-                Console.Write(board[r, d]);
-
-                Console.Write(" ");
+                Console.Write(board[row, column] + " ");
 
             }
 
-            Console.Write("\n");
-
-
-
-            if ((r + 1) % (int)Math.Sqrt(N) == 0)
-
-            {
-
-                Console.Write("");
-
-            }
+            Console.WriteLine();
 
         }
 
     }
 
-
-
-    // Driver Code  
-
     public static void Main(String[] args)
 
     {
 
-
-
-        int[,] board = new int[,]
-
-        {
+        int[,] board = {
 
             {3, 0, 6, 5, 0, 8, 4, 0, 0},
 
@@ -290,13 +236,12 @@ class GFG
 
         int N = board.GetLength(0);
 
-
-
         if (solveSudoku(board, N))
 
         {
+            Console.WriteLine("Solution: ");
 
-            print(board, N); // print solution  
+            print(board, N);  
 
         }
 
@@ -304,11 +249,9 @@ class GFG
 
         {
 
-            Console.Write("No solution");
+            Console.WriteLine("No solution");
 
         }
-
-
 
         Console.ReadKey();
 
